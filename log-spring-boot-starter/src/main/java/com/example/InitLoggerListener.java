@@ -1,10 +1,12 @@
 package com.example;
 
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Filter;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.filter.MarkerFilter;
 import org.apache.logging.log4j.spi.AbstractLogger;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.context.event.ApplicationEnvironmentPreparedEvent;
 import org.springframework.boot.context.logging.LoggingApplicationListener;
 import org.springframework.context.ApplicationListener;
@@ -16,6 +18,10 @@ public class InitLoggerListener implements ApplicationListener<ApplicationEnviro
         LoggerContext context = (LoggerContext) LogManager.getContext(false);
         context.getConfiguration().addFilter(MarkerFilter.createFilter(
                 AbstractLogger.FLOW_MARKER.getName(), Filter.Result.ACCEPT, Filter.Result.NEUTRAL));
+        if (event.getEnvironment().acceptsProfiles("debug")) {
+            String rootPackageName = ((SpringApplication) event.getSource()).getMainApplicationClass().getPackage().getName();
+            context.getConfiguration().getLoggerConfig(rootPackageName).setLevel(Level.DEBUG);
+        }
         context.updateLoggers();
     }
 

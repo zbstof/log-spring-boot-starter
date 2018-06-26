@@ -13,5 +13,6 @@ public class DemoLog4jMarkerApplication {
     public static void main(String[] args) {
         SpringApplication.run(DemoLog4jMarkerApplication.class, args);
         log.trace(AbstractLogger.ENTRY_MARKER, ">>> Hello <<<");
+        log.debug(">>> Debug <<<");
     }
 }
