@@ -1,2 +1,5 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.example.AutoConfig
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=
+org.springframework.context.ApplicationListener=\
+com.example.InitDefaultsListener,\
+com.example.EventsTracingListener,\
+com.example.InitLoggerListener
