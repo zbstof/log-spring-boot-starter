@@ -1,12 +1,15 @@
 package com.example;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import org.springframework.boot.context.config.ConfigFileApplicationListener;
 import org.springframework.boot.context.event.ApplicationEnvironmentPreparedEvent;
+import org.springframework.boot.logging.LogFile;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.Ordered;
 import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.io.support.ResourcePropertySource;
 
@@ -14,6 +17,8 @@ public class InitDefaultsListener implements ApplicationListener<ApplicationEnvi
 
     private static final String DEFAULTS_LOCATION = "defaults/application.properties";
     private static final String DEFAULTS_DEBUG_LOCATION = "defaults/application-debug.properties";
+    private static final String DEFAULTS_LOG_CONSOLE_LOCATION = "defaults/log4j2.xml";
+    private static final String DEFAULTS_LOG_FILE_LOCATION = "defaults/log4j2-file.xml";
 
     public void onApplicationEvent(ApplicationEnvironmentPreparedEvent event) {
         ConfigurableEnvironment environment = event.getEnvironment();
@@ -30,6 +35,13 @@ public class InitDefaultsListener implements ApplicationListener<ApplicationEnvi
                 throw new IllegalArgumentException("Cannot find " + DEFAULTS_DEBUG_LOCATION + " on classpath", e);
             }
         }
+        HashMap<String, Object> source = new HashMap<String, Object>();
+        if (LogFile.get(environment) != null) {
+            source.put("logging.config", "classpath:" + DEFAULTS_LOG_FILE_LOCATION);
+        } else {
+            source.put("logging.config", "classpath:" + DEFAULTS_LOG_CONSOLE_LOCATION);
+        }
+        propertySources.addLast(new MapPropertySource("defaults-log", source));
     }
 
     public int getOrder() {
