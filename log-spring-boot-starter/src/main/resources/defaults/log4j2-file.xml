@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN">
   <Appenders>
+    <MarkerFilter marker="FLOW" onMatch="ACCEPT" onMismatch="NEUTRAL"/>
     <RollingFile name="File" fileName="${sys:LOG_FILE}"
                  filePattern="${sys:LOG_PATH}/$${date:yyyy-MM}/app-%d{yyyy-MM-dd-HH}-%i.log.gz">
       <PatternLayout>
@@ -11,6 +12,29 @@
       </Policies>
     </RollingFile>
   </Appenders>
+  <!--<Properties>-->
+    <!--<Property name="archiveDir">archive</Property>-->
+    <!--&lt;!&ndash;TODO: this duplicates filename from application.properties&ndash;&gt;-->
+    <!--<Property name="logFileName">app.log</Property>-->
+  <!--</Properties>-->
+
+  <!--<MarkerFilter marker="FLOW" onMatch="ACCEPT" onMismatch="NEUTRAL"/>-->
+  <!--<Appenders>-->
+    <!--<RollingFile name="log4j" fileName="${sys:LOG_FILE}"-->
+                 <!--filePattern="${sys:LOG_PATH}/${archiveDir}/${logFileName}.%d{yyyyMMdd_HHmmss}-%i.gz">-->
+      <!--<PatternLayout pattern="${sys:FILE_LOG_PATTERN}"/>-->
+      <!--<Policies>-->
+        <!--<SizeBasedTriggeringPolicy size="${sys:LOG_FILE_MAX_SIZE}"/>-->
+      <!--</Policies>-->
+      <!--<DefaultRolloverStrategy min="1" max="20">-->
+        <!--<Delete basePath="${sys:LOG_PATH}/${archiveDir}">-->
+          <!--<IfFileName glob="*">-->
+            <!--<IfAccumulatedFileSize exceeds="1 GB"/>-->
+          <!--</IfFileName>-->
+        <!--</Delete>-->
+      <!--</DefaultRolloverStrategy>-->
+    <!--</RollingFile>-->
+  <!--</Appenders>-->
   <Loggers>
     <Root level="info">
       <AppenderRef ref="File"/>
